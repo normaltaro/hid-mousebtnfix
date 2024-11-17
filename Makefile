@@ -1,14 +1,26 @@
-obj-m += hid-mimouse.o
+obj-m	:= hid-mousebtnfix.o
+
+KERNELDIR ?= /lib/modules/$(shell uname -r)/build
+PWD       := $(shell pwd)
+MOD_NAME  := hid-mousebtnfix
+MOD_FILE  := $(MOD_NAME).ko
+DESTDIR 	:= /lib/modules/$(shell uname -r)/kernel/drivers/hid/
+
 all:
-	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
-clean:
-	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
-install:
-	cp $(shell pwd)/hid-mimouse.ko /lib/modules/$(shell uname -r)/kernel/drivers/hid/
-	depmod -a
-uninstall:
-	rm $(shell pwd)/hid-mimouse.ko /lib/modules/$(shell uname -r)/kernel/drivers/hid/hid-mimouse.ko
-	depmod -a
+	$(MAKE) -C $(KERNELDIR) M=$(PWD)
+
 dkms:
 	make -C $(INCLUDEDIR) M=$(PWD) modules
 
+install: all
+	install -v -m 644 $(MOD_FILE) $(DESTDIR)
+	depmod -a
+	modprobe $(MOD_NAME)
+
+uninstall:
+	modprobe -r $(MOD_NAME) || true
+	rm -vf $(DESTDIR)/$(MOD_FILE)
+	depmod -a
+
+clean:
+	rm -rf *.o *~ core .depend .*.cmd *.ko *.mod.c .tmp_versions *.mod modules.order *.symvers built-in.a

@@ -1,6 +1,6 @@
 HID Mouse Button Fix
 
-Fixes unrecognized extra buttons for almost all mice for Linux.
+Fixes unrecognized extra buttons for almost all mice for Linux 6.12+.
 ## 🖱️ Usage
 + Identify Your Mouse: Use `lsusb` to find your mouse's vendorid:productid.
 ```

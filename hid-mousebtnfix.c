@@ -31,7 +31,7 @@ static const __u8 mouse_hid_faulty_rdesc[] = {
   0x29, 0x03,        //     Usage Maximum (0x03) TOFIX
 };
 
-static __u8 *mouse_hid_report_fixup(
+static const __u8 *mouse_hid_report_fixup(
     struct hid_device *hdev,
     __u8 *rdesc,
     unsigned int *rsize) 
